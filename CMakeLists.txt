@@ -9,13 +9,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # add_subdirectory(third/)
 
 include_directories(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/include)
-
+include_directories(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/include/knt)
 #包含的源文件和头文件
 set(SOURCES
     include/knt/base64.h
     src/base64.cpp
     include/knt/knt.h
-    src/knt.cpp)
+    src/knt.cpp
+    include/knt/rtcm_decode.h
+    src/rtcm_decode.cpp)
     
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
