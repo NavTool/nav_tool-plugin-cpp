@@ -5,7 +5,7 @@
 #include <chrono>
 
 // #include <unistd.h>
-#include<sstream>
+#include <sstream>
 #ifdef WIN32
 #include <WinSock2.h>
 #include <WS2tcpip.h>
@@ -22,7 +22,6 @@
 #endif
 
 #include <random>
-
 
 std::string util_random_string(int string_len)
 {
@@ -63,17 +62,18 @@ std::string util_cal_connect_key(const char *ServerIP, int serverPort, const cha
     int octets1[4]; // IPv4地址由四个八位组成
     sscanf(ServerIP, "%d.%d.%d.%d", &octets1[0], &octets1[1], &octets1[2], &octets1[3]);
 
-    for (int i = 0; i < 4; ++i)
+    int i = 0;
+    for (i = 0; i < 4; i++)
     {
-        snprintf(hexIp1 + i * 2, sizeof(hexIp1), "%02X", static_cast<unsigned>(octets1[i]));
+        snprintf(hexIp1 + i * 2, sizeof(hexIp1) - i * 2, "%02X", static_cast<unsigned>(octets1[i]));
     }
 
     int octets2[4]; // IPv4地址由四个八位组成
     sscanf(ClientIP, "%d.%d.%d.%d", &octets2[0], &octets2[1], &octets2[2], &octets2[3]);
 
-    for (int i = 0; i < 4; ++i)
+    for (i = 0; i < 4; i++)
     {
-        snprintf(hexIp2 + i * 2, sizeof(hexIp2), "%02X", static_cast<unsigned>(octets2[i]));
+        snprintf(hexIp2 + i * 2, sizeof(hexIp2) - i * 2, "%02X", static_cast<unsigned>(octets2[i]));
     }
 
     snprintf(hexPort1, sizeof(hexPort1), "%04X", serverPort);
@@ -81,9 +81,9 @@ std::string util_cal_connect_key(const char *ServerIP, int serverPort, const cha
 
     char key[25] = "";
 
-    sprintf(key, "%s%s%s%s", hexIp1, hexPort1, hexIp2, hexPort2);
+    snprintf(key, sizeof(key), "%s%s%s%s", hexIp1, hexPort1, hexIp2, hexPort2);
 
-    return std::string() = key;
+    return std::string(key);
 }
 
 std::string util_cal_half_key(const char *IP, int Port)
@@ -224,7 +224,7 @@ std::string util_get_http_date()
 
 std::time_t util_get_now_second()
 {
-       // 获取当前时间点
+    // 获取当前时间点
     auto now = std::chrono::system_clock::now();
     // 转换为 time_t 类型（自1970年1月1日以来的秒数）
     std::time_t current_time = std::chrono::system_clock::to_time_t(now);
